@@ -179,6 +179,7 @@ for idx in range(len(result)):
 # 如果本地没有simfang.ttf，可以在doc/fonts目录下下载
 from PIL import Image
 result = result[0]
+
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -186,6 +187,31 @@ scores = [line[1][1] for line in result]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
+
+# 上述代码result = result[0] 为多余语句，将造成逻辑错误，可直接删除。在此语句基础上后续的boxs、txts、scores赋值语句将对默认输出的单行元素遍历，导致“TypeError: 'float' object is not subscriptable”错误
+# 强行在此语句基础上执行，需将代码进行以下修改（for循环前初始化boxs、txts、scores三个列表，并在for循环里遍历添加每一行的元素）
+## from paddleocr import PaddleOCR, draw_ocr
+## import matplotlib.pyplot as plt
+## from PIL import Image.
+
+## ocr = PaddleOCR(use_angle_cls=True, lang="ch")
+## img_path = './imgs/11.jpg'
+## result = ocr.ocr(img_path, cls=True)
+## boxes=[0]*len(result)
+## txts=[0]*len(result)
+## scores=[0]*len(result)
+
+## for idx in range(len(result)):
+##    res = result[idx]
+##    boxes[idx] = res[0]
+##    txts[idx] = [line[0] for line in res][1]
+##    scores[idx] = [line[1] for line in res][1]
+
+## 保存图片结果
+## image = Image.open(img_path).convert('RGB')
+## im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')
+## im_show = Image.fromarray(im_show)
+## im_show.save('result.jpg')
 ```
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
