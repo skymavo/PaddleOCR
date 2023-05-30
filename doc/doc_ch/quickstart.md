@@ -178,7 +178,7 @@ for idx in range(len(result)):
 # 显示结果
 # 如果本地没有simfang.ttf，可以在doc/fonts目录下下载
 from PIL import Image
-result = result[0]
+# result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
